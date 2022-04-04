@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbIslemleriModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="iller">
+    <Key>
+      <PropertyRef Name="il_no" />
+    </Key>
+    <Property Name="il_no" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="isim" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ilceler" Relationship="Self.fk_il_no" FromRole="iller" ToRole="ilceler" />
+  </EntityType>
+  <EntityType Name="Kullanicilar">
+    <Key>
+      <PropertyRef Name="KId" />
+    </Key>
+    <Property Name="KId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Adıi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Soyadi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TC" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+    <Property Name="TelefonNo" Type="String" MaxLength="11" FixedLength="true" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="KullaniciAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sifre" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="ilceler">
+    <Key>
+      <PropertyRef Name="ilce_no" />
+      <PropertyRef Name="il_no" />
+    </Key>
+    <Property Name="ilce_no" Type="Int32" Nullable="false" />
+    <Property Name="isim" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="il_no" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="iller" Relationship="Self.fk_il_no" FromRole="ilceler" ToRole="iller" />
+  </EntityType>
+  <Association Name="fk_il_no">
+    <End Role="iller" Type="Self.iller" Multiplicity="1" />
+    <End Role="ilceler" Type="Self.ilceler" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="iller">
+        <PropertyRef Name="il_no" />
+      </Principal>
+      <Dependent Role="ilceler">
+        <PropertyRef Name="il_no" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbIslemleriEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="iller" EntityType="Self.iller" />
+    <EntitySet Name="Kullanicilar" EntityType="Self.Kullanicilar" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="ilceler" EntityType="Self.ilceler" />
+    <AssociationSet Name="fk_il_no" Association="Self.fk_il_no">
+      <End Role="iller" EntitySet="iller" />
+      <End Role="ilceler" EntitySet="ilceler" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
